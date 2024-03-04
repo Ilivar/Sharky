@@ -1,11 +1,10 @@
 class World {
   character = new Character();
-  enemies = level1.enemies;
+  level = level1;
   ctx;
   canvas;
   keyboard;
   camerra_x = 0;
-  backgroundObjects = level1.backgroundObjects;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -13,10 +12,22 @@ class World {
     this.keyboard = keyboard;
     this.draw;
     this.setWorld();
+    this.checkCollisions();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  checkCollisions() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          this.character.hit();
+          console.log('Autsch', this.character.energy);
+        }
+      });
+    }, 200);
   }
 
   draw() {
@@ -24,8 +35,8 @@ class World {
 
     this.ctx.translate(this.camerra_x, 0);
 
-    this.addObjectsToMap(this.backgroundObjects);
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.enemies);
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camerra_x, 0);
@@ -46,7 +57,9 @@ class World {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.height, mo.width);
+
+    mo.draw(this.ctx);
+    mo.drawBorder(this.ctx);
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
