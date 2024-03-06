@@ -1,7 +1,13 @@
 class PufferFish extends MovableObject {
-  width = 60;
+  width = 80;
   height = 60;
 
+  offset = {
+    top: 5,
+    left: 0,
+    right: 5,
+    bottom: 20,
+  };
 
   IMAGES_SWIMMING = [
     "../img/Alternative Grafiken - Sharkie/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
@@ -24,6 +30,23 @@ class PufferFish extends MovableObject {
       this.playAnimation(this.IMAGES_SWIMMING);
     }, 1000 / 4);
     this.moveLeft();
-  }
 
+    let setDirection = 0;
+
+    setInterval(() => {
+      if (setDirection == 0) {
+        // this.width += 0.2;
+        this.height += 0.2;
+        if (this.height >= 80) {
+          setDirection = 1;
+        }
+      } else {
+        // this.width -= 0.2;
+        this.height -= 0.2;
+        if (this.height <= 60) {
+          setDirection = 0;
+        }
+      }
+    }, 1000 / 60);
+  }
 }

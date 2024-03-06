@@ -36,7 +36,7 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
+
     this.ctx.translate(this.camerra_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camerra_x, 0);
@@ -69,7 +69,8 @@ class World {
     }
 
     mo.draw(this.ctx);
-    mo.drawBorder(this.ctx);
+    // mo.drawBorder(this.ctx);
+    // mo.drawCollisonFrame(this.ctx);
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }

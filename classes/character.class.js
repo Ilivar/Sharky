@@ -6,6 +6,13 @@ class Character extends MovableObject {
   idleCounter = 0;
   isAnimating = false; // TODO später zur Sicherstellung dass Animation abgeschlossen ist!
 
+  offset = {
+    top: 95,
+    left: 40,
+    right: 40,
+    bottom: 45
+  };
+ 
   swimming_sound = new Audio("../audio/swim.mp3");
   snoring_sound = new Audio("../audio/snore.mp3");
 
@@ -171,11 +178,11 @@ class Character extends MovableObject {
         this.swimming_sound.volume = 0.04;
       }
 
-      if (this.world.character.world.keyboard.UP) {
+      if (this.world.character.world.keyboard.UP && this.y > -80) {
         this.y -= this.speed;
       }
 
-      if (this.world.character.world.keyboard.DOWN) {
+      if (this.world.character.world.keyboard.DOWN && this.y < 300) {
         this.y += this.speed;
       }
       this.world.camerra_x = -this.x + 100;
