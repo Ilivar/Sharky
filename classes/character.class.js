@@ -5,6 +5,8 @@ class Character extends MovableObject {
   speed = 5;
   idleCounter = 0;
   isAnimating = false; // TODO später zur Sicherstellung dass Animation abgeschlossen ist!
+  coin = 0;
+  poison = 0;
 
   offset = {
     top: 95,

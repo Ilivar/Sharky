@@ -5,9 +5,12 @@ class World {
   canvas;
   keyboard;
   camerra_x = 0;
-  statusBarLife = new StatusBar(40,10, 0);
-  statusBarPoison = new StatusBar(40,90, 2);
-  statusBarCoin = new StatusBar(40,50, 1);
+  statusBarLife = new StatusBar(40,10, 0, 100);
+  statusBarPoison = new StatusBar(40,90, 2, 0);
+  statusBarCoin = new StatusBar(40,50, 1, 0);
+
+  coin_sound = new Audio("../audio/coin.mp3");
+  poison_sound = new Audio("../audio/poison.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -31,7 +34,25 @@ class World {
           console.log('Autsch', this.character.energy);
         }
       });
-    }, 200);
+      this.level.coin.forEach((coin) => {
+        if (this.character.isColliding(coin)) {
+          this.character.coin +=10;
+          this.statusBarCoin.setPercentage(this.character.coin);
+          this.level.coin.splice(this.level.coin.indexOf(coin), 1);
+          this.coin_sound.play();
+          this.coin_sound.volume = 0.5;
+        }
+      });
+      this.level.poison.forEach((poison) => {
+        if (this.character.isColliding(poison)) {
+          this.character.poison +=20;
+          this.statusBarPoison.setPercentage(this.character.poison);
+          this.level.poison.splice(this.level.poison.indexOf(poison), 1);
+          this.poison_sound.play();
+          this.poison_sound.volume = 0.5;
+        }
+      });
+    }, 1000/60);
   }
 
   draw() {

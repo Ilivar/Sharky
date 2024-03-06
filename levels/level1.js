@@ -1,5 +1,21 @@
 const level1 = new Level(
-  [new PufferFish(), new PufferFish(), new PufferFish(), new Endboss()],
+  [
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new PufferFish(),
+    new Jellyfish(),
+    new Jellyfish(),
+    new Jellyfish(),
+    new Jellyfish(),
+    new Endboss(),
+  ],
 
   [
     new BackgroundObject(
@@ -28,6 +44,17 @@ const level1 = new Level(
     ),
   ],
 
-  [new Coin(), new Coin(), new Coin(), new Coin(), new Coin(),new Coin(),new Coin(),new Coin(),new Coin(),new Coin(),],
+  [
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+  ],
   [new Poison(), new Poison(), new Poison(), new Poison(), new Poison()]
 );
