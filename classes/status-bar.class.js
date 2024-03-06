@@ -9,35 +9,51 @@ class StatusBar extends DrawableObject {
   ];
 
   IMAGES_COIN = [
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/100_ copia 4.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/80_ copia 4.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/60_ copia 4.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/40_ copia 4.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/20_ copia 2.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/0_ copia 4.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/100.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/80.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/60.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/40.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/20.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/0.png",
   ];
 
   IMAGES_POISON = [
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/100_ copia 3.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/80_ copia 2.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/60_ copia 2.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/40_ copia 2.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/20_ copia 3.png",
-    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/0_ copia 2.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/100.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/80.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/60.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/40.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/20.png",
+    "../img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/0.png",
   ];
-  constructor() {
+
+  currentImages;
+
+  constructor(x,y, imageType) {
     super();
-    this.loadImgs(this.IMAGES_LIFE);
+    switch (imageType) {
+      case 0:
+        this.currentImages = this.IMAGES_LIFE;
+        break;
+      case 1:
+        this.currentImages = this.IMAGES_COIN;
+        break;
+      case 2:
+        this.currentImages = this.IMAGES_POISON;
+        break;
+    }
+    this.loadImgs(this.currentImages);
+
+    // this.loadImgs(this.IMAGES_LIFE);
     this.setPercentage(100);
-    this.x = 40;
-    this.y = 10;
+    this.x = x;
+    this.y = y;
     this.width = 200;
     this.height = 60;
   }
 
   setPercentage(percentage) {
     this.percentage = percentage;
-    let imagePath = this.IMAGES_LIFE[this.imageIndex(percentage)];
+    let imagePath = this.currentImages[this.imageIndex(percentage)];
     this.img = this.imageCache[imagePath];
   }
 

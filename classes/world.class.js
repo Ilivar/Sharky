@@ -5,7 +5,9 @@ class World {
   canvas;
   keyboard;
   camerra_x = 0;
-  statusBar = new StatusBar();
+  statusBarLife = new StatusBar(40,10, 0);
+  statusBarPoison = new StatusBar(40,90, 2);
+  statusBarCoin = new StatusBar(40,50, 1);
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -25,7 +27,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
+          this.statusBarLife.setPercentage(this.character.energy);
           console.log('Autsch', this.character.energy);
         }
       });
@@ -39,10 +41,13 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camerra_x, 0);
     // space for fixed objects
-    this.addToMap(this.statusBar);
+    this.addToMap(this.statusBarPoison);
+    this.addToMap(this.statusBarCoin);
+    this.addToMap(this.statusBarLife);
     this.ctx.translate(this.camerra_x, 0);
-    
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.coin);
+    this.addObjectsToMap(this.level.poison);
     this.addToMap(this.character);
     this.ctx.translate(-this.camerra_x, 0);
     let self = this;
