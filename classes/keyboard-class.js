@@ -4,6 +4,7 @@ class Keyboard {
   UP = false;
   DOWN = false;
   SPACE = false;
+  MOUSE_LEFT_CLICK = false;
 
   constructor() {
     this.keys = {};
@@ -42,6 +43,18 @@ class Keyboard {
       }
       if (e.key == " ") {
         this.SPACE = false;
+      }
+    });
+
+    window.addEventListener("mousedown", (e) => {
+      if (e.button === 0) {
+        this.MOUSE_LEFT_CLICK = true;
+      }
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (e.button === 0) {
+        this.MOUSE_LEFT_CLICK = false;
       }
     });
   }

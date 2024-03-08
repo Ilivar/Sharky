@@ -4,7 +4,6 @@ class Character extends MovableObject {
   world;
   speed = 5;
   idleCounter = 0;
-  isAnimating = false; // TODO später zur Sicherstellung dass Animation abgeschlossen ist!
   coin = 0;
   poison = 0;
 
@@ -12,128 +11,130 @@ class Character extends MovableObject {
     top: 95,
     left: 40,
     right: 40,
-    bottom: 45
+    bottom: 45,
   };
- 
-  swimming_sound = new Audio("../audio/swim.mp3");
-  snoring_sound = new Audio("../audio/snore.mp3");
+
+  swimming_sound = new Audio("./audio/swim.mp3");
+  snoring_sound = new Audio("./audio/snore.mp3");
 
   IMAGES_SWIMMING = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/6.png",
   ];
 
   IMAGES_IDLE = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/8.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/9.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/10.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/11.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/12.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/13.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/14.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/15.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/16.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/17.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/18.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/8.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/9.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/10.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/11.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/12.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/13.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/14.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/15.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/16.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/17.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/1.IDLE/18.png",
   ];
 
   IMAGES_LONG_IDLE = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i8.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i9.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i10.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i12.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i13.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/i14.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I8.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I9.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I10.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I12.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I13.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/2.Long_IDLE/I14.png",
   ];
 
   IMAGES_HURT_POISON = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/1.Poisoned/5.png",
   ];
 
   IMAGES_HURT_SHOCK = [
-   "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/2.Electric shock/o1.png",
-   "../img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/2.Electric shock/o2.png"
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/2.Electric shock/o1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/5.Hurt/2.Electric shock/o2.png",
   ];
 
   IMAGES_DEAD_POISON = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/8.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/9.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/10.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/11.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/12.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/8.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/9.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/10.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/11.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/1.Poisoned/12.png",
   ];
 
   IMAGES_DEAD_SHOCK = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/8.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/9.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/10.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/8.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/9.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/6.dead/2.Electro_shock/10.png",
   ];
 
   IMAGES_ATK_BUBBLE = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
   ];
 
   IMAGES_ATK_SLAP = [
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/1.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/4.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/5.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/6.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/7.png",
-    "../img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/8.png"
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/1.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/4.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/5.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/6.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/7.png",
+    "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/8.png",
   ];
 
   constructor() {
     super().loadImg(
-      "../img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png"
+      "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png"
     );
     this.loadImgs(this.IMAGES_SWIMMING);
-    // this. applyGravity(); add gravity
+    // this. applyGravity();
     this.loadImgs(this.IMAGES_DEAD_POISON);
     this.loadImgs(this.IMAGES_DEAD_SHOCK);
     this.loadImgs(this.IMAGES_HURT_POISON);
     this.loadImgs(this.IMAGES_HURT_SHOCK);
+    this.loadImgs(this.IMAGES_ATK_BUBBLE);
+    this.loadImgs(this.IMAGES_ATK_SLAP);
     this.animate();
   }
 
@@ -162,6 +163,7 @@ class Character extends MovableObject {
   }
 
   animate() {
+    
     setStopableInterval(() => {
       if (
         this.world.character.world.keyboard.RIGHT &&
@@ -187,6 +189,7 @@ class Character extends MovableObject {
       if (this.world.character.world.keyboard.DOWN && this.y < 300) {
         this.y += this.speed;
       }
+
       this.world.camerra_x = -this.x + 100;
     }, 1000 / 60);
 
@@ -203,17 +206,23 @@ class Character extends MovableObject {
       if (this.world.character.world.keyboard.DOWN) {
         this.playAnimation(this.IMAGES_SWIMMING);
       }
+      if (this.world.character.world.keyboard.SPACE) {
+       this.playAnimation(this.IMAGES_ATK_SLAP);
+      }
+      if (this.world.character.world.keyboard.MOUSE_LEFT_CLICK) {
+        this.playAnimation(this.IMAGES_ATK_BUBBLE);
+        let bubble = new Bubble(this.world.level);
+        this.world.level.bubble.push(bubble);
+      }
     }, 1000 / 10);
 
     setStopableInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD_POISON);
         stopGame();
-      }
-      else if (this.isHurt()) {
+      } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT_POISON);
-      }
-      else if (
+      } else if (
         !this.world.character.world.keyboard.RIGHT &&
         !this.world.character.world.keyboard.LEFT
       ) {
@@ -226,8 +235,7 @@ class Character extends MovableObject {
           // this.snoring_sound.play();
           this.snoring_sound.volume = 0.1;
         }
-      }
-      else if (
+      } else if (
         this.world.character.world.keyboard.UP ||
         this.world.character.world.keyboard.DOWN ||
         this.world.character.world.keyboard.RIGHT ||
@@ -237,6 +245,7 @@ class Character extends MovableObject {
         //TODO this.snoring_sound.pause();
       }
     }, 1000 / 3);
-  
   }
+
+  
 }
