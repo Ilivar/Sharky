@@ -35,17 +35,15 @@ class World {
           } else {
             this.character.hit();
             this.statusBarLife.setPercentage(this.character.energy);
-            console.log("Autsch", this.character.energy);
             if (!this.normal_hit_sound.paused) {
               this.normal_hit_sound.pause();
               this.normal_hit_sound.currentTime = 0;
             }
-            this.normal_hit_sound.play();
-            this.normal_hit_sound.volume = 0.5;
+      //TODO      this.normal_hit_sound.volume = 0.5;
           }
         }
-  
       });
+
       this.level.coin.forEach((coin) => {
         if (this.character.isColliding(coin)) {
           this.character.coin += 10;
@@ -59,6 +57,7 @@ class World {
           this.coin_sound.volume = 0.5;
         }
       });
+
       this.level.poison.forEach((poison) => {
         if (this.character.isColliding(poison)) {
           this.character.poison += 20;
@@ -71,15 +70,16 @@ class World {
           this.poison_sound.play();
           this.poison_sound.volume = 0.5;
         }
+
+        this.level.bubble.forEach((bubble) => {
+          this.level.enemies.forEach((enemy) => {
+            if (bubble.isColliding(enemy)) {
+              enemy.energy = 0;
+            }
+          });
+        });
+
       });
-      //foreach machen und gut is
-      // for (i = this.level.bubble.length - 1; i >= 0; i--) {
-      //   if (this.world.isColliding(this.level.bubble[i])) {
-      //     this.character.energy += 10;
-      //     this.statusBarLife.setPercentage(this.character.energy);
-      //     this.level.bubble.splice(this.level.bubble.indexOf(i), 1);
-      //   }
-      // }
     }, 1000 / 60);
   }
 

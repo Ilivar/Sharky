@@ -171,15 +171,13 @@ class Character extends MovableObject {
       ) {
         this.x += this.speed;
         this.otherDirection = false;
-        this.swimming_sound.play();
-        this.swimming_sound.volume = 0.04;
+//TODO        this.swimming_sound.volume = 0.04;
       }
 
       if (this.world.character.world.keyboard.LEFT && this.x > 100) {
         this.x -= this.speed;
         this.otherDirection = true;
-        this.swimming_sound.play();
-        this.swimming_sound.volume = 0.04;
+//TODO        this.swimming_sound.volume = 0.04;
       }
 
       if (this.world.character.world.keyboard.UP && this.y > -80) {
@@ -232,7 +230,7 @@ class Character extends MovableObject {
         if (this.idleCounter > 30) {
           this.loadImgs(this.IMAGES_LONG_IDLE);
           this.playAnimation(this.IMAGES_LONG_IDLE);
-          // this.snoring_sound.play();
+          // TODO this.snoring_sound.play();
           this.snoring_sound.volume = 0.1;
         }
       } else if (
