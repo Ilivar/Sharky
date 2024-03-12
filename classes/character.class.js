@@ -6,6 +6,9 @@ class Character extends MovableObject {
   idleCounter = 0;
   coin = 0;
   poison = 0;
+  empowered = false;
+  player_is_close = false;
+  lose = false;
 
   offset = {
     top: 95,
@@ -16,6 +19,7 @@ class Character extends MovableObject {
 
   swimming_sound = new Audio("./audio/swim.mp3");
   snoring_sound = new Audio("./audio/snore.mp3");
+  lose_sound = new Audio("./audio/lose.mp3");
 
   IMAGES_SWIMMING = [
     "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png",
@@ -123,6 +127,8 @@ class Character extends MovableObject {
     "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/8.png",
   ];
 
+ loseImg = "./img/Alternative Grafiken - Sharkie/6.Botones/Tittles/Game Over/Recurso 11.png"
+
   constructor() {
     super().loadImg(
       "./img/Alternative Grafiken - Sharkie/1.Sharkie/3.Swim/1.png"
@@ -163,7 +169,6 @@ class Character extends MovableObject {
   }
 
   animate() {
-    
     setStopableInterval(() => {
       if (
         this.world.character.world.keyboard.RIGHT &&
@@ -171,13 +176,13 @@ class Character extends MovableObject {
       ) {
         this.x += this.speed;
         this.otherDirection = false;
-//TODO        this.swimming_sound.volume = 0.04;
+        this.swimming_sound.volume = 0.5;
       }
 
       if (this.world.character.world.keyboard.LEFT && this.x > 100) {
         this.x -= this.speed;
         this.otherDirection = true;
-//TODO        this.swimming_sound.volume = 0.04;
+        this.swimming_sound.volume = 0.04;
       }
 
       if (this.world.character.world.keyboard.UP && this.y > -80) {
@@ -205,7 +210,7 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_SWIMMING);
       }
       if (this.world.character.world.keyboard.SPACE) {
-       this.playAnimation(this.IMAGES_ATK_SLAP);
+        this.playAnimation(this.IMAGES_ATK_SLAP);
       }
       if (this.world.character.world.keyboard.MOUSE_LEFT_CLICK) {
         this.playAnimation(this.IMAGES_ATK_BUBBLE);
@@ -217,7 +222,11 @@ class Character extends MovableObject {
     setStopableInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD_POISON);
-        stopGame();
+        showEndScreen(this.loseImg, "Try Again");
+        if (!this.lose) {
+          this.lose_sound.play()
+          this.lose = true;
+        }
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT_POISON);
       } else if (
@@ -230,8 +239,8 @@ class Character extends MovableObject {
         if (this.idleCounter > 30) {
           this.loadImgs(this.IMAGES_LONG_IDLE);
           this.playAnimation(this.IMAGES_LONG_IDLE);
-          // TODO this.snoring_sound.play();
-          this.snoring_sound.volume = 0.1;
+          this.snoring_sound.play();
+          this.snoring_sound.volume = 1;
         }
       } else if (
         this.world.character.world.keyboard.UP ||
@@ -240,10 +249,12 @@ class Character extends MovableObject {
         this.world.character.world.keyboard.LEFT
       ) {
         this.idleCounter = 0;
-        //TODO this.snoring_sound.pause();
+        this.snoring_sound.pause();
+      }
+
+      if (this.world.character.x > 2800) {
+        this.world.character.player_is_close = true;
       }
     }, 1000 / 3);
   }
-
-  
 }

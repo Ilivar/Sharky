@@ -12,6 +12,7 @@ class World {
   coin_sound = new Audio("./audio/coin.mp3");
   poison_sound = new Audio("./audio/poison.mp3");
   normal_hit_sound = new Audio("./audio/normal_hit2.mp3");
+  game_music = new Audio("./audio/game_music.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -24,6 +25,10 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies[this.level.enemies.length - 1].world = this;
+    this.game_music.play();
+    this.game_music.loop = true;
+    this.game_music.volume = 0.5;
   }
 
   checkCollisions() {
@@ -35,11 +40,13 @@ class World {
           } else {
             this.character.hit();
             this.statusBarLife.setPercentage(this.character.energy);
+
             if (!this.normal_hit_sound.paused) {
               this.normal_hit_sound.pause();
               this.normal_hit_sound.currentTime = 0;
             }
-      //TODO      this.normal_hit_sound.volume = 0.5;
+            this.normal_hit_sound.play();
+            this.normal_hit_sound.volume = 1;
           }
         }
       });
@@ -70,15 +77,17 @@ class World {
           this.poison_sound.play();
           this.poison_sound.volume = 0.5;
         }
+      });
 
-        this.level.bubble.forEach((bubble) => {
-          this.level.enemies.forEach((enemy) => {
-            if (bubble.isColliding(enemy)) {
-              enemy.energy = 0;
-            }
-          });
+      this.level.bubble.forEach((bubble) => {
+        this.level.enemies.forEach((enemy) => {
+          if (bubble.isColliding(enemy) && enemy instanceof PufferFish) {
+            enemy.energy = 0;
+          }
+          if (bubble.isColliding(enemy) && this.character.empowered) {
+            enemy.energy = 0;
+          }
         });
-
       });
     }, 1000 / 60);
   }

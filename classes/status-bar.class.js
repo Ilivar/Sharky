@@ -1,34 +1,35 @@
 class StatusBar extends DrawableObject {
   IMAGES_LIFE = [
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/100.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/80.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/60.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/40.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/20.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Life/0.png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life (6).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life (5).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life (4).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life (3).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life (2).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Life/life.png",
   ];
 
   IMAGES_COIN = [
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/100.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/80.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/60.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/40.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/20.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/Coin/0.png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (6).png",
+"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (5).png",
+"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (4).png",
+"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (3).png",
+"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (2).png",
+"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin.png"
+
   ];
 
   IMAGES_POISON = [
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/100.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/80.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/60.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/40.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/20.png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/green/poisoned bubbles/0.png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (6).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (5).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (4).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (3).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (2).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison.png"
   ];
 
   currentImages;
 
-  constructor(x,y, imageType, percentage) {
+  constructor(x, y, imageType, percentage) {
     super();
     switch (imageType) {
       case 0:
@@ -60,15 +61,15 @@ class StatusBar extends DrawableObject {
     if (percentage >= 100) {
       return 0;
     } else if (percentage >= 80) {
-        return 1;
+      return 1;
     } else if (percentage >= 60) {
-        return 2;
+      return 2;
     } else if (percentage >= 40) {
-        return 3;
+      return 3;
     } else if (percentage >= 20) {
-        return 4;
+      return 4;
     } else if (percentage >= 0) {
-        return 5;
+      return 5;
     }
   }
 }

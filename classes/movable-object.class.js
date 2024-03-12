@@ -41,7 +41,18 @@ class MovableObject extends DrawableObject {
     return this.energy == 0;
   }
 
-  moveRight() {}
+  moveToPlayer() {
+    setInterval(() => {
+      const dx = this.world.character.x - this.x;
+      const dy = this.world.character.y - this.y;
+  
+      const stepX = dx / 1000;
+      const stepY = dy / 1000; 
+
+      this.x += stepX;
+      this.y += stepY;
+    }, 1000 / 60);
+  }
 
   moveLeft() {
     setInterval(() => {

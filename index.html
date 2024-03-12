@@ -29,10 +29,28 @@
   </head>
 
   <body onload="init()">
-    <div id="main_container">
     <h1>Sharky</h1>
-
-    <canvas width="720" height="480" id="canvas"> </canvas>
-  </div>
+  
+    <canvas width="720" height="480" id="canvas"></canvas>
+    <div id="overlay">
+      <div id="button_panel">
+        <div id="button_panel_left">
+          <button class="button" id="button_up">
+          </button>
+          <div id="button_mid">
+          <button class="button" id="button_left">
+          </button>
+          <button class="button" id="button_right"> 
+          </div>
+          </button>
+          <button class="button" id="button_down">
+          </button>
+        </div>
+        <div id="button_panel_right">
+          <button class="button" id="slap"></button>
+          <button class="button" id="bubble"></button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

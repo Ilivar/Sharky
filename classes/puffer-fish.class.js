@@ -51,7 +51,7 @@ class PufferFish extends MovableObject {
       "./img/Alternative Grafiken - Sharkie/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png"
     );
     this.y = 100 + Math.random() * 200;
-    this.x = 200 + Math.random() * 3200;
+    this.x = 400 + Math.random() * 3200;
     this.speed = 0.15 + Math.random() * 2;
     this.loadImgs(this.IMAGES_SWIMMING);
     this.loadImgs(this.IMAGES_TRANSITION);
