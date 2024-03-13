@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
   atk_counter = 0;
   win = false;
   hit_counter = 1;
+  spawnCounter = 0;
 
   atk_intervall_counter = 0;
   whale_sound = new Audio("./audio/boss.mp3");
@@ -91,55 +92,78 @@ class Endboss extends MovableObject {
    * This function animates the boss (movement, atk, sound)
    */
   animate() {
-    let spawnCounter = 0;
-
     setInterval(() => {
       if (this.hit_counter >= 50) {
-        this.playAnimation(this.IMAGES_DEAD);
-        this.x = this.x + 50;
-        this.y = this.y - 50;
-        showEndScreen(this.winImg, "Play Again");
-        this.whale_sound.pause();
-        this.world.character.energy = 100;
-        if (!this.win) {
-          this.win_sound.play();
-          if (!mute) {
-            this.win_sound.volume = 1;
-          } else {
-            this.win_sound.volume = 0;
-          }
-          this.win = true;
-        }
+        this.bossDeath();
       } else if (this.hit_counter % 2 === 0) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.whale_hurt.play();
-        if (!mute) {
-          this.whale_hurt.volume = 1;
-        } else {
-          this.whale_hurt.volume = 0;
-        }
-      } else if (world.character.player_is_close && spawnCounter < 8) {
-        this.y = 80;
-        this.playAnimation(this.IMAGES_SPAWN);
-        this.whale_sound.play();
-        this.whale_sound.loop = true;
-        if (!mute) {
-          this.whale_sound.volume = 0.5;
-        } else {
-          this.whale_sound.volume = 0;
-        }
-        this.world.game_music.pause();
-        spawnCounter++;
+        this.bossHurt();
+      } else if (world.character.player_is_close && this.spawnCounter < 8) {
+        this.spawnBoss();
       } else {
-        this.playAnimation(this.IMAGES_FLOATING);
-        this.atk_intervall_counter++;
-        if (this.atk_intervall_counter > 8) {
-          this.playAnimation(this.IMAGES_ATK);
-        }
-        if (spawnCounter > 7) {
-          this.moveToPlayer();
-        }
+        this.normalBossMovement();
       }
     }, 1000 / 4);
+  }
+
+  /**
+   * Death animation and sound
+   */
+  bossDeath() {
+    this.playAnimation(this.IMAGES_DEAD);
+    this.x = this.x + 50;
+    this.y = this.y - 50;
+    showEndScreen(this.winImg, "Play Again");
+    this.whale_sound.pause();
+    this.world.character.energy = 100;
+    if (!this.win) {
+      this.win_sound.play();
+      if (!mute) {
+        this.win_sound.volume = 1;
+      } else {
+        this.win_sound.volume = 0;
+      }
+      this.win = true;
+    }
+  }
+  /**
+   * Hurt animation and sound
+   */
+  bossHurt() {
+    this.playAnimation(this.IMAGES_HURT);
+    this.whale_hurt.play();
+    if (!mute) {
+      this.whale_hurt.volume = 1;
+    } else {
+      this.whale_hurt.volume = 0;
+    }
+  }
+  /**
+   * Spawn animation and bossfightsound
+   */
+  spawnBoss() {
+    this.y = 80;
+    this.playAnimation(this.IMAGES_SPAWN);
+    this.whale_sound.play();
+    this.whale_sound.loop = true;
+    if (!mute) {
+      this.whale_sound.volume = 0.5;
+    } else {
+      this.whale_sound.volume = 0;
+    }
+    this.world.game_music.pause();
+    this.spawnCounter++;
+  }
+  /**
+   * Normal boss movement and attack animation
+   */
+  normalBossMovement() {
+    this.playAnimation(this.IMAGES_FLOATING);
+    this.atk_intervall_counter++;
+    if (this.atk_intervall_counter > 8) {
+      this.playAnimation(this.IMAGES_ATK);
+    }
+    if (this.spawnCounter > 7) {
+      this.moveToPlayer();
+    }
   }
 }

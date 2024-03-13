@@ -69,61 +69,114 @@
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
-          if (this.keyboard.SPACE &amp;&amp; enemy instanceof PufferFish) {
-            enemy.energy = 0;
-          } else {
-            this.character.hit();
-            this.statusBarLife.setPercentage(this.character.energy);
-
-            if (!this.normal_hit_sound.paused) {
-              this.normal_hit_sound.pause();
-              this.normal_hit_sound.currentTime = 0;
-            }
-            this.normal_hit_sound.play();
-            this.normal_hit_sound.volume = 1;
-          }
+          this.colisionPlayerAndEnemy(enemy);
         }
       });
 
       this.level.coin.forEach((coin) => {
         if (this.character.isColliding(coin)) {
-          this.character.coin += 10;
-          this.statusBarCoin.setPercentage(this.character.coin);
-          this.level.coin.splice(this.level.coin.indexOf(coin), 1);
-          if (!this.coin_sound.paused) {
-            this.coin_sound.pause();
-            this.coin_sound.currentTime = 0;
-          }
-          this.coin_sound.play();
-          this.coin_sound.volume = 0.5;
+          this.colisionPlayerAndCoin(coin);
         }
       });
 
       this.level.poison.forEach((poison) => {
         if (this.character.isColliding(poison)) {
-          this.character.poison += 20;
-          this.statusBarPoison.setPercentage(this.character.poison);
-          this.level.poison.splice(this.level.poison.indexOf(poison), 1);
-          if (!this.poison_sound.paused) {
-            this.poison_sound.pause();
-            this.poison_sound.currentTime = 0;
-          }
-          this.poison_sound.play();
-          this.poison_sound.volume = 0.5;
+          this.colisionPlayerAndPoison(poison);
         }
       });
 
       this.level.bubble.forEach((bubble) => {
         this.level.enemies.forEach((enemy) => {
-          if (bubble.isColliding(enemy) &amp;&amp; enemy instanceof PufferFish) {
-            enemy.energy = 0;
-          }
-          if (bubble.isColliding(enemy) &amp;&amp; this.character.empowered) {
-            enemy.energy = 0;
-          }
+          this.colisionBubbleAndEnemy(bubble, enemy);
         });
       });
+      if (!mute) {
+        this.game_music.volume = 0.5;
+      } else {
+        this.game_music.volume = 0;
+      }
     }, 1000 / 60);
+  }
+
+  /**
+   * Checks colission between bubbles and enemies
+   * @param {object} bubble
+   * @param {object} enemy
+   */
+  colisionBubbleAndEnemy(bubble, enemy) {
+    if (bubble.isColliding(enemy) &amp;&amp; enemy instanceof PufferFish) {
+      enemy.energy = 0;
+      this.level.bubble.splice(this.level.bubble.indexOf(bubble), 1);
+    }
+    if (bubble.isColliding(enemy) &amp;&amp; this.character.empowered) {
+      enemy.hit_counter++;
+      this.level.bubble.splice(this.level.bubble.indexOf(bubble), 1);
+    }
+  }
+
+  /**
+   * Checks colission between the character and poison bottles
+   * @param {object} poison
+   */
+  colisionPlayerAndPoison(poison) {
+    this.character.poison += 20;
+    this.statusBarPoison.setPercentage(this.character.poison);
+    this.level.poison.splice(this.level.poison.indexOf(poison), 1);
+    if (!this.poison_sound.paused) {
+      this.poison_sound.pause();
+      this.poison_sound.currentTime = 0;
+    }
+    this.poison_sound.play();
+
+    if (!mute) {
+      this.poison_sound.volume = 0.5;
+    } else {
+      this.poison_sound.volume = 0;
+    }
+  }
+
+  /**
+   * Checks colission between the character and coins
+   * @param {object} coin
+   */
+  colisionPlayerAndCoin(coin) {
+    this.character.coin += 10;
+    this.statusBarCoin.setPercentage(this.character.coin);
+    this.level.coin.splice(this.level.coin.indexOf(coin), 1);
+    if (!this.coin_sound.paused) {
+      this.coin_sound.pause();
+      this.coin_sound.currentTime = 0;
+    }
+    this.coin_sound.play();
+    if (!mute) {
+      this.coin_sound.volume = 0.5;
+    } else {
+      this.coin_sound.volume = 0;
+    }
+  }
+
+  /**
+   * Checks colission between the character and enemies
+   * @param {object} enemy
+   */
+  colisionPlayerAndEnemy(enemy) {
+    if (this.keyboard.SPACE &amp;&amp; enemy instanceof PufferFish) {
+      enemy.energy = 0;
+    } else {
+      this.character.hit();
+      this.statusBarLife.setPercentage(this.character.energy);
+
+      if (!this.normal_hit_sound.paused) {
+        this.normal_hit_sound.pause();
+        this.normal_hit_sound.currentTime = 0;
+      }
+      this.normal_hit_sound.play();
+      if (!mute) {
+        this.normal_hit_sound.volume = 1;
+      } else {
+        this.normal_hit_sound.volume = 0;
+      }
+    }
   }
 
   /**
@@ -212,13 +265,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#init">init</a></li><li><a href="global.html#openInfoWindow">openInfoWindow</a></li><li><a href="global.html#setStopableInterval">setStopableInterval</a></li><li><a href="global.html#showEndScreen">showEndScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#stopGame">stopGame</a></li><li><a href="global.html#touchEvent">touchEvent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkOrientation">checkOrientation</a></li><li><a href="global.html#hideOrientationAlert">hideOrientationAlert</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#muteSound">muteSound</a></li><li><a href="global.html#openInfoWindow">openInfoWindow</a></li><li><a href="global.html#setStopableInterval">setStopableInterval</a></li><li><a href="global.html#showEndScreen">showEndScreen</a></li><li><a href="global.html#showOrientationAlert">showOrientationAlert</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#stopGame">stopGame</a></li><li><a href="global.html#touchEvent">touchEvent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 16:47:02 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Mar 13 2024 16:24:23 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>
