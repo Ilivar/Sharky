@@ -2,6 +2,7 @@ class PufferFish extends MovableObject {
   width = 80;
   height = 60;
   energy = 10;
+  isDead = false;
 
   offset = {
     top: 5,
@@ -60,43 +61,53 @@ class PufferFish extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Animates the entity by cycling through multiple sequences of images with specific durations.
+   */
   animate() {
     let animationIndex = 0;
-
+    let currentInterval;
+  
     const animations = [
       { images: this.IMAGES_SWIMMING, duration: 3000 },
       { images: this.IMAGES_TRANSITION, duration: 400 },
-      { images: this.IMAGES_BUBBLE, duration: 3000 },
+      { images: this.IMAGES_BUBBLE, duration: 3000 }
     ];
-
+  
     const playNextAnimation = () => {
       const currentAnimation = animations[animationIndex];
-      const interval = setInterval(() => {
+      currentInterval = setInterval(() => {
         this.playAnimation(currentAnimation.images);
+        if (this.energy <= 0) {
+          this.isDead = true;
+          clearInterval(currentInterval); // Stoppe das aktuelle Intervall, wenn isDead true ist
+          playDeadAnimation(); // Starte die Dead-Animation
+        }
       }, 1000 / 6);
       setTimeout(() => {
-        clearInterval(interval);
+        clearInterval(currentInterval);
         animationIndex = (animationIndex + 1) % animations.length;
-        if (this.energy > 0) {
-          playNextAnimation();
-        } else {
-          setInterval(() => {
-            this.playAnimation(this.IMAGES_DEAD);
-          }, 1000 / 4);
-
-          setInterval(() => {
-            this.y -= 10;
-            this.x += 10;
-          }, 10);
-        }
+        playNextAnimation();
       }, currentAnimation.duration);
     };
-
+  
     const moveAndPlay = () => {
       this.moveLeft();
       playNextAnimation();
     };
-
+  
+    const playDeadAnimation = () => {
+      setInterval(() => {
+        this.playAnimation(this.IMAGES_DEAD);
+      }, 1000 / 10);
+  
+      setInterval(() => {
+        this.y -= 1;
+        this.x += 1;
+      }, 10);
+    };
+  
     moveAndPlay();
   }
+  
 }

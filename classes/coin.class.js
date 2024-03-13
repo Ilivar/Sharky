@@ -1,3 +1,4 @@
+
 class Coin extends MovableObject {
   width = 60;
   height = 60;
@@ -20,26 +21,14 @@ class Coin extends MovableObject {
   }
 
   intervalCount = 0;
+  
+  /**
+   * This function animates the coin
+   */
   animate() {
     setInterval(() => {
-    this.playAnimation(this.IMAGES_COIN);
-      
+      this.playAnimation(this.IMAGES_COIN);
     }, 1000 / 1);
-   
-
-    //TODO slide coin up and down
-    // setInterval(() => {
-    //   if (this.intervalCount <= 1) {
-    //     this.y += 10;
-    //     this.intervalCount += 1;
-    //   } else {
-    //     this.y -= 10;
-    //     this.intervalCount -= 1;
-    //     if (this.intervalCount == 0) {
-    //       this.intervalCount = 0;
-    //     }
-    //   }
-    // }, 1000 / 3);
   }
-
+  
 }

@@ -45,6 +45,11 @@ class DrawableObject {
     }
   }
 
+  /**
+   * This funtion is used to change the image of the object
+   * @param {string} arr - array of images
+   */
+
   loadImgs(arr) {
     arr.forEach((path) => {
       let img = new Image();

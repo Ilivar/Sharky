@@ -13,7 +13,10 @@ class MovableObject extends DrawableObject {
     bottom: 0,
   };
 
-
+  /**
+   * This function checks if the object is colliding with another object
+   * @param {*} mo - the moveable object
+   */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -23,6 +26,9 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * This function changes the life of the object
+   */
   hit() {
     this.energy -= 2;
     if (this.energy <= 0) {
@@ -32,34 +38,50 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the entity is currently hurt based on the time passed since the last hit.
+   */
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     return timepassed < 2000;
   }
 
+  /**
+   * Checks if the entity is dead based on its energy level.
+   */
   isDead() {
     return this.energy == 0;
   }
 
+  /**
+   * Moves the entity towards the player's position at a constant rate.
+   */
   moveToPlayer() {
     setInterval(() => {
       const dx = this.world.character.x - this.x;
       const dy = this.world.character.y - this.y;
-  
+
       const stepX = dx / 1000;
-      const stepY = dy / 1000; 
+      const stepY = dy / 1000;
 
       this.x += stepX;
       this.y += stepY;
     }, 1000 / 60);
   }
 
+  /**
+   * Moves the entity to the left continuously at a constant speed.
+   */
   moveLeft() {
     setInterval(() => {
       this.x -= this.speed;
     }, 1000 / 60);
   }
 
+  /**
+   * Plays an animation by cycling through a sequence of images.
+   * @param {string[]} images - An array of image paths representing the animation frames.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];

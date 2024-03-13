@@ -1,0 +1,26 @@
+
+
+
+
+
+{
+    "source": {
+      "include": [
+        "./classes/bubble.class.js",
+        "./classes/character.class.js",
+        "./classes/coin.class.js",
+        "./classes/drawable-object.class.js",
+        "./classes/endboss.class.js",
+        "./classes/jellyfish.class.js",
+        "./classes/movable-object.class.js",
+        "./classes/poison.class.js",
+        "./classes/puffer-fish.class.js",
+        "./classes/status-bar.class.js",
+        "./classes/world.class.js",
+        "./js/game.js"
+      ]
+    },
+    "opts": {
+      "destination": "./out"
+    }
+  }

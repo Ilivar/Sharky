@@ -9,6 +9,7 @@ class Character extends MovableObject {
   empowered = false;
   player_is_close = false;
   lose = false;
+  in_animation = false;
 
   offset = {
     top: 95,
@@ -127,7 +128,8 @@ class Character extends MovableObject {
     "./img/Alternative Grafiken - Sharkie/1.Sharkie/4.Attack/Fin slap/8.png",
   ];
 
- loseImg = "./img/Alternative Grafiken - Sharkie/6.Botones/Tittles/Game Over/Recurso 11.png"
+  loseImg =
+    "./img/Alternative Grafiken - Sharkie/6.Botones/Tittles/Game Over/Recurso 11.png";
 
   constructor() {
     super().loadImg(
@@ -144,6 +146,10 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * This function is used to apply gravity to the character (optional)
+   */
+
   applyGravity() {
     setInterval(() => {
       if (this.y < 260) {
@@ -154,6 +160,10 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * This function resets the gravity after swimming upwards
+   */
+
   resetGravity() {
     if (keyboard.UP) {
       this.speedY = 0;
@@ -162,99 +172,177 @@ class Character extends MovableObject {
   }
 
   moveRight() {
-    if (this.world.keyboard.Right === true) {
+    if (key.Right === true) {
       this.x += 100;
       console.log("Right");
     }
   }
 
+  /**
+   * Animates the character movement and actions.
+   */
   animate() {
+    this.moveCharacter();
+    this.animateActions();
+    this.animateState();
+  }
+
+  /**
+   * Moves the character based on keyboard input.
+   */
+  moveCharacter() {
     setStopableInterval(() => {
-      if (
-        this.world.character.world.keyboard.RIGHT &&
-        this.world.level.level_end_x > this.x
-      ) {
-        this.x += this.speed;
-        this.otherDirection = false;
-        this.swimming_sound.volume = 0.5;
-      }
-
-      if (this.world.character.world.keyboard.LEFT && this.x > 100) {
-        this.x -= this.speed;
-        this.otherDirection = true;
-        this.swimming_sound.volume = 0.04;
-      }
-
-      if (this.world.character.world.keyboard.UP && this.y > -80) {
-        this.y -= this.speed;
-      }
-
-      if (this.world.character.world.keyboard.DOWN && this.y < 300) {
-        this.y += this.speed;
-      }
-
-      this.world.camerra_x = -this.x + 100;
+      this.moveCondotion();
     }, 1000 / 60);
+  }
 
+  /**
+   * Set moving conditions
+   */
+  moveCondotion() {
+    if (
+      this.world.character.world.keyboard.RIGHT &&
+      this.world.level.level_end_x > this.x
+    ) {
+      this.x += this.speed;
+      this.otherDirection = false;
+    }
+
+    if (this.world.character.world.keyboard.LEFT && this.x > 100) {
+      this.x -= this.speed;
+      this.otherDirection = true;
+    }
+
+    if (this.world.character.world.keyboard.UP && this.y > -80) {
+      this.y -= this.speed;
+    }
+
+    if (this.world.character.world.keyboard.DOWN && this.y < 300) {
+      this.y += this.speed;
+    }
+
+    this.world.camerra_x = -this.x + 100;
+  }
+
+  /**
+   * Animates the character's actions based on keyboard input.
+   */
+  animateActions() {
     setStopableInterval(() => {
-      if (this.world.character.world.keyboard.RIGHT) {
-        this.playAnimation(this.IMAGES_SWIMMING);
-      }
-      if (this.world.character.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_SWIMMING);
-      }
-      if (this.world.character.world.keyboard.UP) {
-        this.playAnimation(this.IMAGES_SWIMMING);
-      }
-      if (this.world.character.world.keyboard.DOWN) {
-        this.playAnimation(this.IMAGES_SWIMMING);
-      }
-      if (this.world.character.world.keyboard.SPACE) {
-        this.playAnimation(this.IMAGES_ATK_SLAP);
-      }
-      if (this.world.character.world.keyboard.MOUSE_LEFT_CLICK) {
-        this.playAnimation(this.IMAGES_ATK_BUBBLE);
-        let bubble = new Bubble(this.world.level);
-        this.world.level.bubble.push(bubble);
-      }
+      this.characterMovement();
     }, 1000 / 10);
+  }
 
+  /**
+   * Animates the character's state based on keyboard input.
+   */
+  characterMovement() {
+    if (this.world.character.world.keyboard.RIGHT) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+      this.idleCounter = 0;
+    }
+    if (this.world.character.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+      this.idleCounter = 0;
+    }
+    if (this.world.character.world.keyboard.UP) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+      this.idleCounter = 0;
+    }
+    if (this.world.character.world.keyboard.DOWN) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+      this.idleCounter = 0;
+    }
+    if (this.world.character.world.keyboard.SPACE) {
+      this.playAnimation(this.IMAGES_ATK_SLAP);
+      this.idleCounter = 0;
+    }
+    if (this.world.character.world.keyboard.MOUSE_LEFT_CLICK) {
+      this.shootBubble();
+    }
+  }
+
+  /**
+   * Shoots a bubble.
+   */
+  shootBubble() {
+    this.playAnimation(this.IMAGES_ATK_BUBBLE);
+    let bubble = new Bubble(this.world.level);
+    this.world.level.bubble.push(bubble);
+    this.idleCounter = 0;
+    this.snoring_sound.pause();
+  }
+
+  /**
+   * Animates the character's state, such as idle, hurt, or dead.
+   */
+  animateState() {
     setStopableInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD_POISON);
-        showEndScreen(this.loseImg, "Try Again");
-        if (!this.lose) {
-          this.lose_sound.play()
-          this.lose = true;
-        }
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT_POISON);
-      } else if (
-        !this.world.character.world.keyboard.RIGHT &&
-        !this.world.character.world.keyboard.LEFT
-      ) {
-        this.loadImgs(this.IMAGES_IDLE);
-        this.playAnimation(this.IMAGES_IDLE);
-        this.idleCounter++;
-        if (this.idleCounter > 30) {
-          this.loadImgs(this.IMAGES_LONG_IDLE);
-          this.playAnimation(this.IMAGES_LONG_IDLE);
-          this.snoring_sound.play();
-          this.snoring_sound.volume = 1;
-        }
-      } else if (
-        this.world.character.world.keyboard.UP ||
-        this.world.character.world.keyboard.DOWN ||
-        this.world.character.world.keyboard.RIGHT ||
-        this.world.character.world.keyboard.LEFT
-      ) {
-        this.idleCounter = 0;
-        this.snoring_sound.pause();
-      }
-
-      if (this.world.character.x > 2800) {
-        this.world.character.player_is_close = true;
-      }
+      this.checkAndChangeState();
     }, 1000 / 3);
+  }
+
+  /**
+   * This function check and change status of the character
+   */
+  checkAndChangeState() {
+    if (this.isDead()) {
+      this.deadAnimation();
+    } else if (this.isHurt()) {
+      this.hurtAnimation();
+    } else if (
+      !this.world.character.world.keyboard.RIGHT &&
+      !this.world.character.world.keyboard.LEFT
+    ) {
+      this.idleAnimation();
+    } else if (
+      this.world.character.world.keyboard.UP ||
+      this.world.character.world.keyboard.DOWN ||
+      this.world.character.world.keyboard.RIGHT ||
+      this.world.character.world.keyboard.LEFT
+    ) {
+      this.idleCounter = 0;
+      this.snoring_sound.pause();
+    }
+
+    if (this.world.character.x > 2800) {
+      this.world.character.player_is_close = true;
+    }
+  }
+
+  deadAnimation() {
+    this.playAnimation(this.IMAGES_DEAD_POISON);
+    showEndScreen(this.loseImg, "Try Again");
+    if (!this.lose) {
+      this.lose_sound.play();
+      if (!mute) {
+        this.lose_sound.volume = 1;
+      } else {
+        this.lose_sound.volume = 0;
+      }
+      this.lose = true;
+    }
+  }
+
+  hurtAnimation() {
+    this.playAnimation(this.IMAGES_HURT_POISON);
+    this.idleCounter = 0;
+    this.snoring_sound.pause();
+  }
+
+  idleAnimation() {
+    this.loadImgs(this.IMAGES_IDLE);
+    this.playAnimation(this.IMAGES_IDLE);
+    this.idleCounter++;
+    if (this.idleCounter > 30) {
+      this.loadImgs(this.IMAGES_LONG_IDLE);
+      this.playAnimation(this.IMAGES_LONG_IDLE);
+      this.snoring_sound.play();
+      if (!mute) {
+        this.snoring_sound.volume = 1;
+      } else {
+        this.snoring_sound.volume = 0;
+      }
+    }
   }
 }

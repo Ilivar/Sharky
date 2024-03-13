@@ -25,8 +25,12 @@ class Jellyfish extends MovableObject {
     this.loadImgs(this.IMAGES_JELLYFISH);
     this.animate();
   }
-
+ 
+  /**
+   * This function animates the jellyfish (movement, sound)
+   */
   animate() {
+   
     setInterval(() => {
       this.playAnimation(this.IMAGES_JELLYFISH);
     }, 1000 / 4);

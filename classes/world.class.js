@@ -23,6 +23,9 @@ class World {
     this.checkCollisions();
   }
 
+  /**
+   * Sets the current world for the character and enemies, and starts playing the game music.
+   */
   setWorld() {
     this.character.world = this;
     this.level.enemies[this.level.enemies.length - 1].world = this;
@@ -31,67 +34,126 @@ class World {
     this.game_music.volume = 0.5;
   }
 
+  /**
+   * Checks for collisions between the character and enemies / coins / poison and performs actions accordingly.
+   */
   checkCollisions() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
-          if (this.keyboard.SPACE) {
-            enemy.energy = 0;
-          } else {
-            this.character.hit();
-            this.statusBarLife.setPercentage(this.character.energy);
-
-            if (!this.normal_hit_sound.paused) {
-              this.normal_hit_sound.pause();
-              this.normal_hit_sound.currentTime = 0;
-            }
-            this.normal_hit_sound.play();
-            this.normal_hit_sound.volume = 1;
-          }
+          this.colisionPlayerAndEnemy(enemy);
         }
       });
 
       this.level.coin.forEach((coin) => {
         if (this.character.isColliding(coin)) {
-          this.character.coin += 10;
-          this.statusBarCoin.setPercentage(this.character.coin);
-          this.level.coin.splice(this.level.coin.indexOf(coin), 1);
-          if (!this.coin_sound.paused) {
-            this.coin_sound.pause();
-            this.coin_sound.currentTime = 0;
-          }
-          this.coin_sound.play();
-          this.coin_sound.volume = 0.5;
+          this.colisionPlayerAndCoin(coin);
         }
       });
 
       this.level.poison.forEach((poison) => {
         if (this.character.isColliding(poison)) {
-          this.character.poison += 20;
-          this.statusBarPoison.setPercentage(this.character.poison);
-          this.level.poison.splice(this.level.poison.indexOf(poison), 1);
-          if (!this.poison_sound.paused) {
-            this.poison_sound.pause();
-            this.poison_sound.currentTime = 0;
-          }
-          this.poison_sound.play();
-          this.poison_sound.volume = 0.5;
+          this.colisionPlayerAndPoison(poison);
         }
       });
 
       this.level.bubble.forEach((bubble) => {
         this.level.enemies.forEach((enemy) => {
-          if (bubble.isColliding(enemy) && enemy instanceof PufferFish) {
-            enemy.energy = 0;
-          }
-          if (bubble.isColliding(enemy) && this.character.empowered) {
-            enemy.energy = 0;
-          }
+          this.colisionBubbleAndEnemy(bubble, enemy);
         });
       });
+      if (!mute) {
+        this.game_music.volume = 0.5;
+      } else {
+        this.game_music.volume = 0;
+      }
     }, 1000 / 60);
   }
 
+  /**
+   * Checks colission between bubbles and enemies
+   * @param {object} bubble
+   * @param {object} enemy
+   */
+  colisionBubbleAndEnemy(bubble, enemy) {
+    if (bubble.isColliding(enemy) && enemy instanceof PufferFish) {
+      enemy.energy = 0;
+      this.level.bubble.splice(this.level.bubble.indexOf(bubble), 1);
+    }
+    if (bubble.isColliding(enemy) && this.character.empowered) {
+      enemy.hit_counter++;
+      this.level.bubble.splice(this.level.bubble.indexOf(bubble), 1);
+    }
+  }
+
+  /**
+   * Checks colission between the character and poison bottles
+   * @param {object} poison
+   */
+  colisionPlayerAndPoison(poison) {
+    this.character.poison += 20;
+    this.statusBarPoison.setPercentage(this.character.poison);
+    this.level.poison.splice(this.level.poison.indexOf(poison), 1);
+    if (!this.poison_sound.paused) {
+      this.poison_sound.pause();
+      this.poison_sound.currentTime = 0;
+    }
+    this.poison_sound.play();
+
+    if (!mute) {
+      this.poison_sound.volume = 0.5;
+    } else {
+      this.poison_sound.volume = 0;
+    }
+  }
+
+  /**
+   * Checks colission between the character and coins
+   * @param {object} coin
+   */
+  colisionPlayerAndCoin(coin) {
+    this.character.coin += 10;
+    this.statusBarCoin.setPercentage(this.character.coin);
+    this.level.coin.splice(this.level.coin.indexOf(coin), 1);
+    if (!this.coin_sound.paused) {
+      this.coin_sound.pause();
+      this.coin_sound.currentTime = 0;
+    }
+    this.coin_sound.play();
+    if (!mute) {
+      this.coin_sound.volume = 0.5;
+    } else {
+      this.coin_sound.volume = 0;
+    }
+  }
+
+  /**
+   * Checks colission between the character and enemies
+   * @param {object} enemy
+   */
+  colisionPlayerAndEnemy(enemy) {
+    if (this.keyboard.SPACE && enemy instanceof PufferFish) {
+      enemy.energy = 0;
+    } else {
+      this.character.hit();
+      this.statusBarLife.setPercentage(this.character.energy);
+
+      if (!this.normal_hit_sound.paused) {
+        this.normal_hit_sound.pause();
+        this.normal_hit_sound.currentTime = 0;
+      }
+      this.normal_hit_sound.play();
+      if (!mute) {
+        this.normal_hit_sound.volume = 1;
+      } else {
+        this.normal_hit_sound.volume = 0;
+      }
+    }
+  }
+
+  /**
+   * Clears the canvas, translates the context for camera movement, and draws various game objects.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -111,17 +173,28 @@ class World {
     this.ctx.translate(-this.camerra_x, 0);
     let self = this;
 
+    /**
+     * Requests the browser to call the draw function for the next animation frame.
+     */
     requestAnimationFrame(function () {
       self.draw();
     });
   }
 
+  /**
+   * Adds multiple objects to the map for rendering.
+   * @param {Object[]} objects - An array of objects to be added to the map.
+   */
   addObjectsToMap(objects) {
     objects.forEach((o) => {
       this.addToMap(o);
     });
   }
 
+  /**
+   * Adds an object to the map for rendering and flips its image if required.
+   * @param {Object} mo - The object to be added to the map.
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -135,13 +208,20 @@ class World {
     }
   }
 
+  /**
+   * Flips the image of the object horizontally.
+   * @param {Object} mo - The object whose image is to be flipped.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
   }
-
+  /**
+   * Flips the image back.
+   * @param {Object} mo - The object whose image is to be flipped.
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();

@@ -54,6 +54,18 @@ canvas {
   align-items: center;
 }
 
+#mute{
+  margin-bottom: 36px;
+  border-radius: 50px;
+  border-color: #422ce2;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+#mute:hover {
+  scale: 1.2;
+}
+
 #button_panel_left {
   display: flex;
   flex-direction: column;
@@ -138,6 +150,12 @@ canvas {
     width: 100%;
     display: block;
   }
+  #mute{
+    position: absolute;
+    top: 5%;
+    right: 15%;
+    scale: 0.8;
+  }
 }
 
 @media only screen and (max-height: 480px) {
@@ -151,5 +169,11 @@ canvas {
     top: 60%;
     width: 100%;
     display: block;
+  }
+  #mute{
+    position: absolute;
+    top: 5%;
+    right: 15%;
+    scale: 0.8;
   }
 }

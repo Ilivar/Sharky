@@ -10,12 +10,11 @@ class StatusBar extends DrawableObject {
 
   IMAGES_COIN = [
     "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (6).png",
-"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (5).png",
-"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (4).png",
-"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (3).png",
-"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (2).png",
-"./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin.png"
-
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (5).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (4).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (3).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin (2).png",
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Coin/coin.png",
   ];
 
   IMAGES_POISON = [
@@ -24,7 +23,7 @@ class StatusBar extends DrawableObject {
     "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (4).png",
     "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (3).png",
     "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison (2).png",
-    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison.png"
+    "./img/Alternative Grafiken - Sharkie/4. Marcadores/Purple/Poison/poison.png",
   ];
 
   currentImages;
@@ -51,12 +50,20 @@ class StatusBar extends DrawableObject {
     this.height = 60;
   }
 
+  /**
+   * Sets the percentage of completion and updates the entity's image accordingly.
+   * @param {number} percentage - The percentage of completion.
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let imagePath = this.currentImages[this.imageIndex(percentage)];
     this.img = this.imageCache[imagePath];
   }
 
+  /**
+   * Determines the index of the image to be displayed based on the given percentage.
+   * @param {number} percentage - The percentage of completion.
+   */
   imageIndex(percentage) {
     if (percentage >= 100) {
       return 0;

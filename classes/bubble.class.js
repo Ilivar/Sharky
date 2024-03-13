@@ -12,6 +12,9 @@ class Bubble extends MovableObject {
     this.animate();
   }
 
+  /**
+   * This function changes the image to poison bubbles
+   */
   empowered() {
     if (world.character.poison == 100) {
       this.loadImg(
@@ -20,6 +23,9 @@ class Bubble extends MovableObject {
       world.character.empowered = true;
     }
   }
+  /**
+   * This function animates the bubble
+   */
   animate() {
     setInterval(() => {
       this.x += 10;

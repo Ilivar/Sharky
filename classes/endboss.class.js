@@ -4,11 +4,13 @@ class Endboss extends MovableObject {
   world;
   atk_counter = 0;
   win = false;
+  hit_counter = 1;
 
   atk_intervall_counter = 0;
   whale_sound = new Audio("./audio/boss.mp3");
   bite_sound = new Audio("./audio/bite.mp3");
   win_sound = new Audio("./audio/win.mp3");
+  whale_hurt = new Audio("./audio/whale.mp3");
 
   offset = {
     top: 130,
@@ -69,7 +71,8 @@ class Endboss extends MovableObject {
     "./img/Alternative Grafiken - Sharkie/2.Enemy/3 Final Enemy/Hurt/4.png",
   ];
 
- winImg = "./img/Alternative Grafiken - Sharkie/6.Botones/Tittles/You win/Mesa de trabajo 1.png";
+  winImg =
+    "./img/Alternative Grafiken - Sharkie/6.Botones/Tittles/You win/Mesa de trabajo 1.png";
 
   constructor() {
     super().loadImg(
@@ -84,12 +87,14 @@ class Endboss extends MovableObject {
     this.loadImgs(this.IMAGES_HURT);
     this.animate();
   }
-
+  /**
+   * This function animates the boss (movement, atk, sound)
+   */
   animate() {
     let spawnCounter = 0;
 
     setInterval(() => {
-      if (this.energy <= 0) {
+      if (this.hit_counter >= 50) {
         this.playAnimation(this.IMAGES_DEAD);
         this.x = this.x + 50;
         this.y = this.y - 50;
@@ -97,16 +102,32 @@ class Endboss extends MovableObject {
         this.whale_sound.pause();
         this.world.character.energy = 100;
         if (!this.win) {
-          this.win_sound.play()
+          this.win_sound.play();
+          if (!mute) {
+            this.win_sound.volume = 1;
+          } else {
+            this.win_sound.volume = 0;
+          }
           this.win = true;
         }
-      
+      } else if (this.hit_counter % 2 === 0) {
+        this.playAnimation(this.IMAGES_HURT);
+        this.whale_hurt.play();
+        if (!mute) {
+          this.whale_hurt.volume = 1;
+        } else {
+          this.whale_hurt.volume = 0;
+        }
       } else if (world.character.player_is_close && spawnCounter < 8) {
         this.y = 80;
         this.playAnimation(this.IMAGES_SPAWN);
         this.whale_sound.play();
         this.whale_sound.loop = true;
-        this.whale_sound.volume = 0.5;
+        if (!mute) {
+          this.whale_sound.volume = 0.5;
+        } else {
+          this.whale_sound.volume = 0;
+        }
         this.world.game_music.pause();
         spawnCounter++;
       } else {
@@ -120,8 +141,5 @@ class Endboss extends MovableObject {
         }
       }
     }, 1000 / 4);
-
   }
-  
-  
 }
